@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>CFBundleDisplayName</key><string>WatchApp</string>
+  <key>CFBundleVersion</key><string>1</string>
+  <key>CFBundleShortVersionString</key><string>0.1.0</string>
+  <key>UILaunchScreen</key><dict/>
+  <key>NSBluetoothAlwaysUsageDescription</key><string>WatchApp uses Bluetooth to securely sync measurements from your watch.</string>
+  <key>NSHealthShareUsageDescription</key><string>WatchApp can check export status for measurements you choose.</string>
+  <key>NSHealthUpdateUsageDescription</key><string>WatchApp writes measurements you choose to Apple Health.</string>
+  <key>UIBackgroundModes</key><array><string>bluetooth-central</string></array>
+  <key>ITSAppUsesNonExemptEncryption</key><false/>
+</dict></plist>

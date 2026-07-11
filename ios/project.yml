@@ -1,0 +1,33 @@
+name: WatchApp
+options:
+  bundleIdPrefix: com.xylo
+  deploymentTarget:
+    iOS: "18.0"
+settings:
+  base:
+    SWIFT_VERSION: 6.0
+    DEVELOPMENT_TEAM: ""
+targets:
+  WatchApp:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.xylo.WatchApp
+        PRODUCT_NAME: WatchApp
+        INFOPLIST_FILE: Sources/Supporting/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Sources/Supporting/WatchApp.entitlements
+        TARGETED_DEVICE_FAMILY: "1"
+        OTHER_LDFLAGS: "$(inherited) -lz"
+    scheme:
+      testTargets: [WatchAppTests]
+  WatchAppTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests]
+    dependencies:
+      - target: WatchApp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.xylo.WatchAppTests
