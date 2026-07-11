@@ -1,0 +1,32 @@
+# macOS and Xcode
+.DS_Store
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.ipa
+
+# Android and Gradle
+.gradle/
+**/build/
+local.properties
+captures/
+*.apk
+*.aab
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# Secrets and signing
+*.jks
+*.keystore
+*.p12
+*.mobileprovision
+*.env
+
+# Generated validation output
+.cache/
+reports/
+__pycache__/
+*.py[cod]
