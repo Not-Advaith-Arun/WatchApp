@@ -1,0 +1,24 @@
+{
+  "documentType": "raw_session_manifest",
+  "schemaVersion": 1,
+  "sessionId": "018f47a2-bf31-7b20-93be-58af108e71ca",
+  "sensorKind": "accelerometer",
+  "samplingRateHz": 50.0,
+  "channels": [
+    { "name": "x", "unit": "m/s2", "sampleType": "float32_le" },
+    { "name": "y", "unit": "m/s2", "sampleType": "float32_le" },
+    { "name": "z", "unit": "m/s2", "sampleType": "float32_le" }
+  ],
+  "startedAt": "2026-07-11T08:35:00Z",
+  "endedAt": "2026-07-11T08:35:30Z",
+  "timezoneOffsetMinutes": 330,
+  "deviceId": "wa_rW7T9jEtA4RvhOeZx1gc2Q",
+  "source": "samsung_sensor_sdk",
+  "quality": "good",
+  "statusFlags": [],
+  "chunkCount": 1,
+  "sampleCount": 2,
+  "encodingVersion": 1,
+  "sessionSha256": "778d038eac6f35c7551d9874b51b48ff6fddb3119992529a1fdcbb634d6fb96e",
+  "disclaimer": "fitness/wellness only"
+}

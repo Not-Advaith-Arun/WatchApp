@@ -1,0 +1,10 @@
+{
+  "protocolMajor": 1,
+  "protocolMinor": 0,
+  "messageType": 21,
+  "requestId": 0,
+  "keyEpoch": 1,
+  "frameCounter": "42",
+  "ciphertextBase64": "AQIDBA==",
+  "tagHex": "00112233445566778899aabbccddeeff"
+}

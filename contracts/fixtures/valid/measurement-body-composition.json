@@ -1,0 +1,16 @@
+{
+  "id": "018f47a2-9ea1-7c22-b515-4a013abf8539",
+  "schemaVersion": 1,
+  "deviceId": "wa_rW7T9jEtA4RvhOeZx1gc2Q",
+  "sequence": "43",
+  "metricType": "body_composition",
+  "observedAt": "2026-07-11T08:32:00Z",
+  "timezoneOffsetMinutes": 330,
+  "durationMillis": 28000,
+  "components": { "body_fat_percentage": 18.3, "lean_body_mass_kg": 59.8, "body_mass_kg": 73.2 },
+  "unit": "1",
+  "source": "samsung_sensor_sdk",
+  "quality": "uncertain",
+  "statusFlags": ["motion_detected"],
+  "createdAt": "2026-07-11T08:32:01Z"
+}

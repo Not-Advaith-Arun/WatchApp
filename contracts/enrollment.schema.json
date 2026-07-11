@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://watchapp.local/contracts/enrollment.schema.json",
+  "title": "WatchApp plaintext enrollment document",
+  "oneOf": [
+    { "$ref": "#/$defs/advertisement" },
+    { "$ref": "#/$defs/phoneHello" },
+    { "$ref": "#/$defs/watchHello" },
+    { "$ref": "#/$defs/confirmation" }
+  ],
+  "$defs": {
+    "nonce": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+    "publicKey": { "type": "string", "description": "Base64 SEC1 uncompressed P-256 point, exactly 65 bytes", "contentEncoding": "base64", "pattern": "^B[A-Za-z0-9+/]{86}=$" },
+    "instanceId": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "advertisement": {
+      "type": "object", "additionalProperties": false,
+      "required": ["documentType", "protocolMajor", "enrollmentAvailable", "watchNonce"],
+      "properties": {
+        "documentType": { "const": "enrollment_advertisement" }, "protocolMajor": { "const": 1 },
+        "enrollmentAvailable": { "const": true }, "watchNonce": { "$ref": "#/$defs/nonce" }
+      }
+    },
+    "phoneHello": {
+      "type": "object", "additionalProperties": false,
+      "required": ["documentType", "protocolMajor", "protocolMinor", "phoneInstanceId", "phoneIdentityPublicKey", "phoneEphemeralPublicKey", "observedWatchNonce", "phoneNonce"],
+      "properties": {
+        "documentType": { "const": "enrollment_phone_hello" }, "protocolMajor": { "const": 1 },
+        "protocolMinor": { "type": "integer", "minimum": 0, "maximum": 65535 }, "phoneInstanceId": { "$ref": "#/$defs/instanceId" },
+        "phoneIdentityPublicKey": { "$ref": "#/$defs/publicKey" }, "phoneEphemeralPublicKey": { "$ref": "#/$defs/publicKey" },
+        "observedWatchNonce": { "$ref": "#/$defs/nonce" }, "phoneNonce": { "$ref": "#/$defs/nonce" }
+      }
+    },
+    "watchHello": {
+      "type": "object", "additionalProperties": false,
+      "required": ["documentType", "protocolMajor", "protocolMinor", "watchIdentityPublicKey", "watchEphemeralPublicKey", "watchNonce", "phoneNonce"],
+      "properties": {
+        "documentType": { "const": "enrollment_watch_hello" }, "protocolMajor": { "const": 1 },
+        "protocolMinor": { "type": "integer", "minimum": 0, "maximum": 65535 },
+        "watchIdentityPublicKey": { "$ref": "#/$defs/publicKey" }, "watchEphemeralPublicKey": { "$ref": "#/$defs/publicKey" },
+        "watchNonce": { "$ref": "#/$defs/nonce" }, "phoneNonce": { "$ref": "#/$defs/nonce" }
+      }
+    },
+    "confirmation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["documentType", "accepted", "transcriptSha256"],
+      "properties": {
+        "documentType": { "const": "enrollment_confirmation" }, "accepted": { "type": "boolean" },
+        "transcriptSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    }
+  }
+}

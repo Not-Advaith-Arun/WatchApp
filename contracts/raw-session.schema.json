@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://watchapp.local/contracts/raw-session.schema.json",
+  "title": "WatchApp raw recording session documents",
+  "description": "A discriminated union for a raw-session manifest or one independently verifiable compressed chunk.",
+  "oneOf": [
+    { "$ref": "#/$defs/manifest" },
+    { "$ref": "#/$defs/chunk" }
+  ],
+  "$defs": {
+    "uuid": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "deviceId": { "type": "string", "pattern": "^wa_[A-Za-z0-9_-]{22,64}$" },
+    "instant": { "type": "string", "format": "date-time", "pattern": "Z$" },
+    "digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "quality": { "enum": ["good", "uncertain", "poor", "unknown"] },
+    "source": { "enum": ["wear_health_services", "samsung_sensor_sdk"] },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["documentType", "schemaVersion", "sessionId", "sensorKind", "samplingRateHz", "channels", "startedAt", "endedAt", "deviceId", "source", "quality", "chunkCount", "sampleCount", "encodingVersion", "sessionSha256", "disclaimer"],
+      "properties": {
+        "documentType": { "const": "raw_session_manifest" },
+        "schemaVersion": { "const": 1 },
+        "sessionId": { "$ref": "#/$defs/uuid" },
+        "sensorKind": { "enum": ["ecg", "ppg_green", "ppg_red_ir", "accelerometer"] },
+        "samplingRateHz": { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 },
+        "channels": {
+          "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["name", "unit", "sampleType"],
+            "properties": {
+              "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,31}$" },
+              "unit": { "enum": ["mV", "1", "m/s2"] },
+              "sampleType": { "enum": ["float32_le", "int16_le", "int32_le"] }
+            }
+          }
+        },
+        "startedAt": { "$ref": "#/$defs/instant" },
+        "endedAt": { "$ref": "#/$defs/instant" },
+        "timezoneOffsetMinutes": { "type": "integer", "minimum": -840, "maximum": 840 },
+        "deviceId": { "$ref": "#/$defs/deviceId" },
+        "source": { "$ref": "#/$defs/source" },
+        "quality": { "$ref": "#/$defs/quality" },
+        "statusFlags": { "type": "array", "uniqueItems": true, "maxItems": 12, "items": { "enum": ["off_body", "incomplete", "interrupted", "poor_contact", "motion_detected", "out_of_range", "clock_untrusted"] } },
+        "chunkCount": { "type": "integer", "minimum": 1, "maximum": 65535 },
+        "sampleCount": { "type": "integer", "minimum": 1, "maximum": 3600000 },
+        "encodingVersion": { "const": 1 },
+        "sessionSha256": { "$ref": "#/$defs/digest" },
+        "disclaimer": { "const": "fitness/wellness only" }
+      }
+    },
+    "chunk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["documentType", "schemaVersion", "sessionId", "chunkIndex", "sampleStartIndex", "sampleCount", "encodingVersion", "compression", "payloadBase64", "uncompressedLength", "uncompressedSha256"],
+      "properties": {
+        "documentType": { "const": "raw_session_chunk" },
+        "schemaVersion": { "const": 1 },
+        "sessionId": { "$ref": "#/$defs/uuid" },
+        "chunkIndex": { "type": "integer", "minimum": 0, "maximum": 65534 },
+        "sampleStartIndex": { "type": "integer", "minimum": 0, "maximum": 3599999 },
+        "sampleCount": { "type": "integer", "minimum": 1, "maximum": 100000 },
+        "encodingVersion": { "const": 1 },
+        "compression": { "const": "deflate_raw" },
+        "payloadBase64": { "type": "string", "contentEncoding": "base64" },
+        "uncompressedLength": { "type": "integer", "minimum": 1, "maximum": 8388608 },
+        "uncompressedSha256": { "$ref": "#/$defs/digest" }
+      }
+    }
+  }
+}

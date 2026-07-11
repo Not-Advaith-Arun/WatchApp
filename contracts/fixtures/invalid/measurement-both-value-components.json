@@ -1,0 +1,17 @@
+{
+  "id": "018f47a2-4cf4-7a91-a312-3d3a7d2a80b1",
+  "schemaVersion": 1,
+  "deviceId": "wa_rW7T9jEtA4RvhOeZx1gc2Q",
+  "sequence": "45",
+  "metricType": "body_composition",
+  "observedAt": "2026-07-11T08:30:12Z",
+  "timezoneOffsetMinutes": 330,
+  "durationMillis": 30000,
+  "value": 18.3,
+  "components": { "body_fat_percentage": 18.3 },
+  "unit": "1",
+  "source": "samsung_sensor_sdk",
+  "quality": "good",
+  "statusFlags": [],
+  "createdAt": "2026-07-11T08:30:13Z"
+}

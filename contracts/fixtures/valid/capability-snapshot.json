@@ -1,0 +1,11 @@
+{
+  "documentType": "capability_snapshot",
+  "schemaVersion": 1,
+  "snapshotVersion": "7",
+  "capturedAt": "2026-07-11T08:40:00Z",
+  "deviceId": "wa_rW7T9jEtA4RvhOeZx1gc2Q",
+  "capabilities": [
+    { "id": "heart_rate", "state": "available", "modes": ["passive", "live"], "source": "wear_health_services" },
+    { "id": "ecg", "state": "approval_blocked", "modes": ["raw_session"], "source": "samsung_sensor_sdk", "reasonCode": "partner_approval_required" }
+  ]
+}

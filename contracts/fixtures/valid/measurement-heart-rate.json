@@ -1,0 +1,15 @@
+{
+  "id": "018f47a2-4cf4-7a91-a312-3d3a7d2a80b1",
+  "schemaVersion": 1,
+  "deviceId": "wa_rW7T9jEtA4RvhOeZx1gc2Q",
+  "sequence": "18446744073709551615",
+  "metricType": "heart_rate",
+  "observedAt": "2026-07-11T08:30:12.425Z",
+  "timezoneOffsetMinutes": 330,
+  "value": 72.0,
+  "unit": "{beats}/min",
+  "source": "wear_health_services",
+  "quality": "good",
+  "statusFlags": [],
+  "createdAt": "2026-07-11T08:30:12.600Z"
+}

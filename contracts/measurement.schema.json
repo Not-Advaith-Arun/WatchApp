@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://watchapp.local/contracts/measurement.schema.json",
+  "title": "WatchApp durable measurement record",
+  "description": "JSON interchange form of a v1 durable scalar or aggregate. BLE CBOR encodes sequence as an unsigned integer; JSON uses a decimal string to avoid precision loss.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "schemaVersion", "deviceId", "sequence", "metricType", "observedAt", "timezoneOffsetMinutes", "unit", "source", "quality", "statusFlags", "createdAt"],
+  "properties": {
+    "id": { "$ref": "#/$defs/uuid" },
+    "schemaVersion": { "const": 1 },
+    "deviceId": { "$ref": "#/$defs/deviceId" },
+    "sequence": { "$ref": "#/$defs/uint64String" },
+    "metricType": {
+      "enum": ["heart_rate", "ibi", "steps", "distance", "active_energy", "workout_summary", "oxygen_saturation", "skin_temperature", "body_composition"]
+    },
+    "observedAt": { "$ref": "#/$defs/instant" },
+    "timezoneOffsetMinutes": { "type": "integer", "minimum": -840, "maximum": 840 },
+    "durationMillis": { "type": "integer", "minimum": 1, "maximum": 604800000 },
+    "value": { "type": "number" },
+    "components": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 24,
+      "additionalProperties": false,
+      "properties": {
+        "body_fat_percentage": { "type": "number" },
+        "lean_body_mass_kg": { "type": "number" },
+        "body_mass_kg": { "type": "number" },
+        "skeletal_muscle_mass_kg": { "type": "number" },
+        "body_water_percentage": { "type": "number" },
+        "distance_m": { "type": "number" },
+        "active_energy_kcal": { "type": "number" },
+        "steps_count": { "type": "number" },
+        "average_heart_rate_bpm": { "type": "number" },
+        "minimum_heart_rate_bpm": { "type": "number" },
+        "maximum_heart_rate_bpm": { "type": "number" },
+        "workout_type_code": { "type": "number" }
+      }
+    },
+    "unit": {
+      "description": "Canonical UCUM-compatible identifier. Compound records use 1; each component name carries its canonical unit.",
+      "enum": ["{beats}/min", "ms", "{count}", "m", "kcal", "%", "Cel", "kg", "1"]
+    },
+    "source": { "enum": ["wear_health_services", "samsung_sensor_sdk"] },
+    "quality": { "enum": ["good", "uncertain", "poor", "unknown"] },
+    "statusFlags": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 12,
+      "items": { "enum": ["off_body", "incomplete", "interrupted", "poor_contact", "motion_detected", "out_of_range", "estimated", "user_entered", "clock_untrusted"] }
+    },
+    "sessionId": { "$ref": "#/$defs/uuid" },
+    "createdAt": { "$ref": "#/$defs/instant" }
+  },
+  "oneOf": [
+    { "required": ["value"], "not": { "required": ["components"] } },
+    { "required": ["components"], "not": { "required": ["value"] } }
+  ],
+  "allOf": [
+    { "if": { "properties": { "metricType": { "const": "heart_rate" } } }, "then": { "properties": { "unit": { "const": "{beats}/min" } }, "required": ["value"] } },
+    { "if": { "properties": { "metricType": { "const": "ibi" } } }, "then": { "properties": { "unit": { "const": "ms" } }, "required": ["value"] } },
+    { "if": { "properties": { "metricType": { "const": "steps" } } }, "then": { "properties": { "unit": { "const": "{count}" } }, "required": ["value", "durationMillis"] } },
+    { "if": { "properties": { "metricType": { "const": "distance" } } }, "then": { "properties": { "unit": { "const": "m" } }, "required": ["value", "durationMillis"] } },
+    { "if": { "properties": { "metricType": { "const": "active_energy" } } }, "then": { "properties": { "unit": { "const": "kcal" } }, "required": ["value", "durationMillis"] } },
+    { "if": { "properties": { "metricType": { "const": "oxygen_saturation" } } }, "then": { "properties": { "unit": { "const": "%" } }, "required": ["value"] } },
+    { "if": { "properties": { "metricType": { "const": "skin_temperature" } } }, "then": { "properties": { "unit": { "const": "Cel" } }, "required": ["value"] } },
+    { "if": { "properties": { "metricType": { "enum": ["workout_summary", "body_composition"] } } }, "then": { "properties": { "unit": { "const": "1" } }, "required": ["components", "durationMillis"] } }
+  ],
+  "$defs": {
+    "uuid": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "deviceId": { "type": "string", "pattern": "^wa_[A-Za-z0-9_-]{22,64}$" },
+    "uint64String": { "type": "string", "pattern": "^(0|[1-9][0-9]{0,19})$" },
+    "instant": { "type": "string", "format": "date-time", "pattern": "Z$" }
+  }
+}

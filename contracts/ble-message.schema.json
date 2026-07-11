@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://watchapp.local/contracts/ble-message.schema.json",
+  "title": "WatchApp encrypted BLE frame interchange form",
+  "type": "object", "additionalProperties": false,
+  "required": ["protocolMajor", "protocolMinor", "messageType", "requestId", "keyEpoch", "frameCounter", "ciphertextBase64", "tagHex"],
+  "properties": {
+    "protocolMajor": { "const": 1 },
+    "protocolMinor": { "type": "integer", "minimum": 0, "maximum": 65535 },
+    "messageType": { "enum": [1, 2, 3, 4, 10, 11, 12, 20, 21, 30, 40, 41, 255] },
+    "requestId": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+    "keyEpoch": { "type": "integer", "minimum": 1, "maximum": 4294967295 },
+    "frameCounter": { "$ref": "#/$defs/uint64String" },
+    "ciphertextBase64": { "type": "string", "contentEncoding": "base64" },
+    "tagHex": { "type": "string", "pattern": "^[0-9a-f]{32}$" }
+  },
+  "$defs": { "uint64String": { "type": "string", "pattern": "^[1-9][0-9]{0,19}$" } }
+}

@@ -1,0 +1,11 @@
+{
+  "documentType": "capability_snapshot",
+  "schemaVersion": 1,
+  "snapshotVersion": "8",
+  "capturedAt": "2026-07-11T08:40:00Z",
+  "deviceId": "wa_rW7T9jEtA4RvhOeZx1gc2Q",
+  "capabilities": [
+    { "id": "heart_rate", "state": "available", "modes": ["passive"], "source": "wear_health_services" },
+    { "id": "heart_rate", "state": "unsupported", "modes": [], "source": "wear_health_services", "reasonCode": "firmware_unsupported" }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "documentType": "raw_session_chunk",
+  "schemaVersion": 1,
+  "sessionId": "018f47a2-bf31-7b20-93be-58af108e71ca",
+  "chunkIndex": -1,
+  "sampleStartIndex": 0,
+  "sampleCount": 2,
+  "encodingVersion": 1,
+  "compression": "deflate_raw",
+  "payloadBase64": "Y2AAgQZ7EOkAAQ==",
+  "uncompressedLength": 24,
+  "uncompressedSha256": "7d7c2a383c6c25b7a19987ff221730a30fb01d210f6a20d4e13aa9eb9d428b1f"
+}
