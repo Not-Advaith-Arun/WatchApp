@@ -25,7 +25,7 @@ import XCTest
 
 @MainActor final class TestTransport: BluetoothTransport {
     var state: ConnectionState = .offline; var enrollment: EnrollmentState = .idle; var status = WatchStatus.empty
-    var onChange: (@MainActor @Sendable () -> Void)?; var onMeasurements: (@MainActor @Sendable ([Measurement]) async throws -> Void)?
+    var onChange: (@MainActor @Sendable () -> Void)?; var onMeasurements: (@MainActor @Sendable ([WatchApp.Measurement]) async throws -> Void)?
     var onRawSession: (@MainActor @Sendable (RawSession) async throws -> Void)?
     func startScanning() throws { enrollment = .scanning; onChange?() }
     func confirmEnrollment() throws {}; func cancelEnrollment() {}; func synchronize() throws {}

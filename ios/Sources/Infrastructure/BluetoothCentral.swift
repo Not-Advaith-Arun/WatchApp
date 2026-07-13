@@ -50,7 +50,7 @@ struct ProtocolMessage: Sendable {
     override init() { super.init(); _ = central }
 
     func startScanning() throws {
-        guard central.authorization == .allowedAlways else { throw AppServiceError.unavailable("Allow Bluetooth access in Settings to find your watch.") }
+        guard CBCentralManager.authorization == .allowedAlways else { throw AppServiceError.unavailable("Allow Bluetooth access in Settings to find your watch.") }
         guard central.state == .poweredOn else { throw AppServiceError.unavailable("Turn on Bluetooth to find your watch.") }
         enrollment = .scanning
         central.scanForPeripherals(withServices: [BLEContract.service], options: [CBCentralManagerScanOptionAllowDuplicatesKey: false])
