@@ -157,7 +157,7 @@ struct ProtocolMessage: Sendable {
 
 private struct RawTransfer { let manifest: RawManifest; var chunks:[Int:Data] }
 
-extension CoreBluetoothTransport: CBCentralManagerDelegate, CBPeripheralDelegate {
+extension CoreBluetoothTransport: @preconcurrency CBCentralManagerDelegate, @preconcurrency CBPeripheralDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) { if central.state != .poweredOn { state = .offline } }
     func centralManager(_ central: CBCentralManager, willRestoreState dict: [String: Any]) {
         if let restored = (dict[CBCentralManagerRestoredStatePeripheralsKey] as? [CBPeripheral])?.first { peripheral = restored; restored.delegate = self; central.connect(restored) }

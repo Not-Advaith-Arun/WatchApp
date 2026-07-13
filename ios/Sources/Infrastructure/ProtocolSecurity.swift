@@ -87,7 +87,7 @@ enum DeterministicCBOR {
         var d = Data([0xa8]); d += header.dropFirst(); d += uint(6); d += bytes(ciphertext); d += uint(7); d += bytes(tag); return d
     }
     static func decodeEnvelope(_ data: Data) throws -> SecureEnvelope {
-        var r = Reader(data); guard try r.byte() == 0xa8 else { throw AppServiceError.corruptData }
+        var r = Reader(data: data); guard try r.byte() == 0xa8 else { throw AppServiceError.corruptData }
         var nums: [UInt64: UInt64] = [:]; var blobs: [UInt64: Data] = [:]
         for _ in 0..<8 { let key = try r.uint(); if key < 6 { nums[key] = try r.uint() } else { blobs[key] = try r.bytes() } }
         guard r.atEnd, nums[0] != nil, let epoch = nums[4].flatMap(UInt32.init(exactly:)), let cipher = blobs[6], let tag = blobs[7], tag.count == 16 else { throw AppServiceError.corruptData }

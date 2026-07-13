@@ -72,7 +72,7 @@ actor ProtectedStore: MeasurementRepository, RawSessionRepository {
         let csv = exportDirectory.appending(path: "\(id.uuidString).csv")
         try JSONEncoder.watchApp.encode(session).write(to: json, options: [.atomic, .completeFileProtection])
         var text = "sample,\(session.channels.joined(separator: ","))\n"
-        for (index, row) in session.samples.enumerated() { text += "\(index),\(row.map(String.init).joined(separator: ","))\n" }
+        for (index, row) in session.samples.enumerated() { text += "\(index),\(row.map { String($0) }.joined(separator: ","))\n" }
         try Data(text.utf8).write(to: csv, options: [.atomic, .completeFileProtection])
         return [json, csv]
     }

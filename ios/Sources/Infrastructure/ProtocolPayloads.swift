@@ -8,18 +8,18 @@ enum CBORValue: Equatable, Sendable { case unsigned(UInt64), negative(Int64), by
 enum PayloadCBOR {
     static func encode(_ value: CBORValue) -> Data {
         switch value {
-        case .unsigned(let n): DeterministicCBOR.uint(n)
-        case .negative(let n): encodeMajor(1, UInt64(-1 - n))
-        case .bytes(let d): encodeMajor(2, UInt64(d.count)) + d
-        case .text(let s): encodeMajor(3, UInt64(s.utf8.count)) + Data(s.utf8)
-        case .array(let a): encodeMajor(4, UInt64(a.count)) + a.reduce(into: Data()) { $0 += encode($1) }
-        case .map(let m): encodeMajor(5, UInt64(m.count)) + m.keys.sorted().reduce(into: Data()) { $0 += DeterministicCBOR.uint($1); $0 += encode(m[$1]!) }
+        case .unsigned(let n): return DeterministicCBOR.uint(n)
+        case .negative(let n): return encodeMajor(1, UInt64(-1 - n))
+        case .bytes(let d): return encodeMajor(2, UInt64(d.count)) + d
+        case .text(let s): return encodeMajor(3, UInt64(s.utf8.count)) + Data(s.utf8)
+        case .array(let a): return encodeMajor(4, UInt64(a.count)) + a.reduce(into: Data()) { $0 += encode($1) }
+        case .map(let m): return encodeMajor(5, UInt64(m.count)) + m.keys.sorted().reduce(into: Data()) { $0 += DeterministicCBOR.uint($1); $0 += encode(m[$1]!) }
         case .double(let d): var bits = d.bitPattern.bigEndian; return Data([0xfb]) + Data(bytes: &bits, count: 8)
-        case .bool(let b): Data([b ? 0xf5 : 0xf4])
-        case .null: Data([0xf6])
+        case .bool(let b): return Data([b ? 0xf5 : 0xf4])
+        case .null: return Data([0xf6])
         }
     }
-    static func decode(_ data: Data) throws -> CBORValue { var r = Reader(data); let value = try r.value(); guard r.index == data.count else { throw AppServiceError.corruptData }; return value }
+    static func decode(_ data: Data) throws -> CBORValue { var r = Reader(data: data); let value = try r.value(); guard r.index == data.count else { throw AppServiceError.corruptData }; return value }
     private static func encodeMajor(_ major: UInt8, _ n: UInt64) -> Data { let u = DeterministicCBOR.uint(n); var d = u; d[0] |= major << 5; return d }
     private struct Reader {
         let data: Data; var index = 0

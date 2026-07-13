@@ -30,35 +30,36 @@ actor HealthKitService: HealthKitExporter {
     }
 
     private static func quantityType(_ kind: MeasurementKind) -> HKQuantityType? {
-        let identifier: HKQuantityTypeIdentifier = switch kind {
-        case .heartRate: .heartRate
+        let identifier: HKQuantityTypeIdentifier
+        switch kind {
+        case .heartRate: identifier = .heartRate
         // IBI is not equivalent to the SDNN statistic HealthKit expects.
         case .ibi: return nil
-        case .steps: .stepCount
-        case .distance: .distanceWalkingRunning
-        case .activeEnergy: .activeEnergyBurned
-        case .oxygenSaturation: .oxygenSaturation
+        case .steps: identifier = .stepCount
+        case .distance: identifier = .distanceWalkingRunning
+        case .activeEnergy: identifier = .activeEnergyBurned
+        case .oxygenSaturation: identifier = .oxygenSaturation
         // Galaxy skin temperature is not automatically equivalent to Apple's
         // sleeping wrist-temperature semantic.
         case .skinTemperature: return nil
-        case .bodyFat: .bodyFatPercentage
-        case .leanBodyMass: .leanBodyMass
-        case .hrv: .heartRateVariabilitySDNN
+        case .bodyFat: identifier = .bodyFatPercentage
+        case .leanBodyMass: identifier = .leanBodyMass
+        case .hrv: identifier = .heartRateVariabilitySDNN
         case .workoutSummary, .bodyComposition: return nil
         }
         return HKObjectType.quantityType(forIdentifier: identifier)
     }
     private static func unit(_ kind: MeasurementKind) -> HKUnit? {
         switch kind {
-        case .heartRate: HKUnit.count().unitDivided(by: .minute())
+        case .heartRate: return HKUnit.count().unitDivided(by: .minute())
         case .ibi: return nil
-        case .steps: .count()
-        case .distance: .meter()
-        case .activeEnergy: .kilocalorie()
-        case .oxygenSaturation, .bodyFat: .percent()
+        case .steps: return .count()
+        case .distance: return .meter()
+        case .activeEnergy: return .kilocalorie()
+        case .oxygenSaturation, .bodyFat: return .percent()
         case .skinTemperature: return nil
-        case .leanBodyMass: .gramUnit(with: .kilo)
-        case .hrv: .secondUnit(with: .milli)
+        case .leanBodyMass: return .gramUnit(with: .kilo)
+        case .hrv: return .secondUnit(with: .milli)
         case .workoutSummary, .bodyComposition: return nil
         }
     }
