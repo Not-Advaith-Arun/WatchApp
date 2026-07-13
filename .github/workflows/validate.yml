@@ -42,5 +42,5 @@ jobs:
       - working-directory: ios
         run: >-
           xcodebuild -project WatchApp.xcodeproj -scheme WatchApp
-          -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
-          CODE_SIGNING_ALLOWED=NO test
+          -destination 'generic/platform=iOS Simulator'
+          CODE_SIGNING_ALLOWED=NO build-for-testing
